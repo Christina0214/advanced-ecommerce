@@ -73,91 +73,56 @@ Make sure you have installed:
 - A Firebase account
 
 1. Clone the repository
-git clone YOUR_REPOSITORY_URL
-Replace YOUR_REPOSITORY_URL with the URL of your Git repository.
+- git clone https://github.com/Christina0214/advanced-ecommerce
 2. Open the project folder
 cd advanced-ecommerce
 3. Install dependencies
 npm install
 4. Configure Firebase
-Create a Firebase project and register a Web App in the Firebase
+- Create a Firebase project and register a Web App in the Firebase
 Console.
-
-Enable the following Firebase services:
-1. Authentication -- enable the Email/Password sign-in provider.
-2. Cloud Firestore -- create a Firestore database.
-Add your Firebase web app configuration to
-src/config/firebaseConfig.ts. Keep your existing configuration
-structure and initialize the Firebase app, Authentication, and Firestore
-there.
-
-Do not commit private service-account credentials or other server-side
-secrets to your repository. Firebase web configuration is intended to be
-used by the client, but access to your Firestore data must still be
-protected with security rules.
+- Enable the following Firebase services:
+A. Authentication -- enable the Email/Password sign-in provider.
+B. Cloud Firestore -- create a Firestore database. Add your Firebase web app configuration to
+src/config/firebaseConfig.ts.
 5. Start the development server
-npm run dev
+- npm run dev
 Open the local URL printed in your terminal by Vite.
 
-Firebase Setup
+## Firebase Setup
 In the Firebase Console:
 1. Open your Firebase project.
 2. Go to Build → Authentication → Sign-in method.
 3. Enable Email/Password and save the change.
 4. Go to Build → Firestore Database.
 5. Create a database.
-6. Configure Firestore Security Rules for your application.
-Firestore collections are created automatically when the application
-first writes a document to them. The users, products, and orders
-collections do not need to be manually populated with empty collections.
-Firestore Database Structure
-The application uses the following collections.
-users
-Stores user-related documents.
+6. Configure Firestore Security Rules for your application. Firestore collections are created automatically when the application
+first writes a document to them. The users, products, and orders collections do not need to be manually populated with empty collections.
 
-A registration-created user document is associated with the Firebase
+## Firestore Database Structure:
+
+The application uses the following collections:
+
+- users
+Stores user-related documents. A registration-created user document is associated with the Firebase
 Authentication user's UID.
 
-Example registration profile:
-{
-  uid: "FIREBASE_AUTH_USER_UID",
-  email: "user@example.com",
-  createdAt: "Firestore server timestamp"
-}
-The basic user data form also writes name and age records to this
-collection:
-{
-  name: "Alex",
-  age: 25
-}
-These are examples of the different document shapes currently used in
-the collection.
-products
+- products
 Stores products displayed in the shop.
-{
-  title: "Example Product",
-  price: 29.99,
-  category: "electronics",
-  description: "Product description",
-  image: "https://example.com/product-image.jpg"
-}
-The Firestore document ID is used as the product ID in the application.
-A rating object may also be present, but it is optional.
-orders
+
+- orders
 Stores completed orders.
-{
-  userId: "FIREBASE_AUTH_USER_UID",
-  userEmail: "user@example.com",
-  items: [
-    {
-      id: "PRODUCT_DOCUMENT_ID",
-      title: "Example Product",
-      price: 29.99,
-      quantity: 2
-    }
-  ],
-  totalPrice: 59.98,
-  createdAt: "Firestore server timestamp"
-}
-The items array contains the products included in the order. The
-userId field connects the order to the user who placed it.
+
+## Application Routes
+
+The application includes these main routes:
+
+/                  Home page with products
+/cart              Shopping cart and checkout
+/login             User login
+/register          User registration
+/add-product       Product management page
+/orders            Signed-in user's order history
+/orders/:orderId   Details for an individual order
+/add-data          Add a user data record
+/display-data      Display and manage user data records
