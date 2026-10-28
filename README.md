@@ -9,6 +9,12 @@ This project is an e-commerce application developed with React and TypeScript. I
 
 Users can register and log in, browse products stored in Firestore, manage products, add items to a Redux-powered shopping cart, and place orders. Order information is saved in Firestore and can be viewed later in the order history.
 
+## Live Demo
+
+Visit the deployed application:
+
+https://advanced-ecommerce-rho.vercel.app/
+
 ## Technologies Used:
 
 - React -- building the user interface
@@ -63,6 +69,35 @@ The cart state is managed with Redux Toolkit.
 - Open an individual order to view its products, quantities,
   subtotals, and total price.
 
+## Testing and CI/CD
+
+The project includes automated tests and a continuous integration and deployment pipeline.
+
+## Testing
+
+- Unit tests for the ProductCard component.
+
+- Unit tests for the CartItem component.
+
+- An integration test verifying that adding a product updates the shopping cart.
+
+- Jest and React Testing Library are used for testing.
+
+## Continuous Integration (CI)
+
+GitHub Actions automatically:
+
+- Installs project dependencies.
+
+- Runs the automated tests.
+
+- Builds the application for production.
+
+## Continuous Deployment (CD)
+
+Vercel is integrated with GitHub Actions to automate production deployments.
+Deployment runs after the CI job succeeds, ensuring that the application is tested and built successfully before deployment.
+
 ## Getting Started
 
 ## Prerequisites
@@ -96,7 +131,9 @@ In the Firebase Console:
 3. Enable Email/Password and save the change.
 4. Go to Build → Firestore Database.
 5. Create a database.
-6. Configure Firestore Security Rules for your application. Firestore collections are created automatically when the application
+6. Configure Firestore Security Rules for your application. 
+
+Firestore collections are created automatically when the application
 first writes a document to them. The users, products, and orders collections do not need to be manually populated with empty collections.
 
 ## Firestore Database Structure:
