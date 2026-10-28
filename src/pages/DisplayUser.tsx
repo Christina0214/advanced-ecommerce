@@ -4,7 +4,7 @@ import { collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firesto
 import "./UserData.css";
 
 interface User {
-    id?: string; // id is optional, as it will only be available after data is fetched
+    id: string;
     name: string;
     age: number;
 }
@@ -49,8 +49,8 @@ const DisplayData = () => {
         const fetchData = async () => {
         const querySnapshot = await getDocs(collection(db, 'users'));
         const dataArray = querySnapshot.docs.map((doc) => ({
-            id: doc.id,
             ...doc.data(),
+            id: doc.id,
         })) as User[];
         setUsers(dataArray);
         };
