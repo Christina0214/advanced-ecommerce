@@ -1,55 +1,46 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { collection, getDocs } from "firebase/firestore";
 
+import { db } from "../config/firebaseConfig";
 import ProductCard from "../components/ProductCard";
-import type { Product } from "../types/product";
+import type { Product } from "../types/Products.ts";
 
-const API_URL = "https://fakestoreapi.com";
+// Fetch products from Firestore
+async function fetchProducts(): Promise<Product[]> {
+  const querySnapshot = await getDocs(collection(db, "products"));
 
-async function fetchProducts(category: string): Promise<Product[]> {
-  const url =
-    category === "all"
-      ? `${API_URL}/products`
-      : `${API_URL}/products/category/${encodeURIComponent(category)}`;
+  const products = querySnapshot.docs.map((document) => ({
+    ...document.data(),
+    id: document.id,
+  })) as Product[];
 
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error("Failed to load products");
-  }
-
-  return response.json();
-}
-
-async function fetchCategories(): Promise<string[]> {
-  const response = await fetch(`${API_URL}/products/categories`);
-
-  if (!response.ok) {
-    throw new Error("Failed to load categories");
-  }
-
-  return response.json();
+  return products;
 }
 
 export default function Home() {
   const [category, setCategory] = useState("all");
 
+  // Get products using React Query
   const {
     data: products,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["products", category],
-    queryFn: () => fetchProducts(category),
+    queryKey: ["products"],
+    queryFn: fetchProducts,
   });
 
-  const {
-    data: categories,
-    isLoading: categoriesLoading,
-  } = useQuery({
-    queryKey: ["categories"],
-    queryFn: fetchCategories,
-  });
+  // Get unique categories from the products
+  const categories = [
+    ...new Set(products?.map((product) => product.category) ?? []),
+  ];
+
+  // Filter products by selected category
+  const filteredProducts =
+    category === "all"
+      ? products
+      : products?.filter((product) => product.category === category);
 
   if (isLoading) return <p>Loading products...</p>;
 
@@ -65,11 +56,10 @@ export default function Home() {
         id="category"
         value={category}
         onChange={(e) => setCategory(e.target.value)}
-        disabled={categoriesLoading}
       >
         <option value="all">All Categories</option>
 
-        {categories?.map((item) => (
+        {categories.map((item) => (
           <option key={item} value={item}>
             {item}
           </option>
@@ -77,7 +67,7 @@ export default function Home() {
       </select>
 
       <div className="product-grid">
-        {products?.map((product) => (
+        {filteredProducts?.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>

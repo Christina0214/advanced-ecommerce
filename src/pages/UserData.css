@@ -1,0 +1,76 @@
+/* General page styling */
+.user-data-page {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.user-data-page h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+/* Add Data Form */
+.user-data-form {
+  max-width: 400px;
+  width: 90%;
+  margin: 30px auto;
+  padding: 25px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.user-data-form input {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.user-data-form button,
+.person-card button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.user-data-form button:hover,
+.person-card button:hover {
+  background-color: #1d4ed8;
+}
+
+/* Display Data */
+.person-card {
+  background: white;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.person-card p {
+  color: #555;
+}
+
+.person-card input {
+  padding: 9px;
+  margin: 8px 5px 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.person-card .delete-button {
+  background-color: crimson;
+}
+
+.person-card .delete-button:hover {
+  background-color: darkred;
+}

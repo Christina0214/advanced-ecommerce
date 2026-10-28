@@ -1,97 +1,163 @@
-## Advanced E-commerce Shopping Application
+## MyStore -- E-Commerce Web Application
 
-## Project Description:
+A React and TypeScript e-commerce application that uses Firebase Authentication for user accounts and Cloud Firestore for product
+and order management. The app also includes a shopping cart, product management, and order history.
 
-This is an Advanced E-commerce Shopping Application built with React and TypeScript. It allows users to browse products, filter products by category, add products to a shopping cart, manage quantities, and simulate checkout.
+## About the Project
 
-The application uses the FakeStore API to retrieve product information.
+This project is an e-commerce application developed with React and TypeScript. It originally used the FakeStore API for product data. The application has been extended to use Firebase and Firestore instead.
+
+Users can register and log in, browse products stored in Firestore, manage products, add items to a Redux-powered shopping cart, and place orders. Order information is saved in Firestore and can be viewed later in the order history.
 
 ## Technologies Used:
 
-React
-
-TypeScript
-
-Vite
-
-React Query (TanStack Query)
-
-Redux Toolkit
-
-React Redux
-
-React Router
-
-Session Storage
-
-CSS
-
-FakeStore API
+- React -- building the user interface
+- TypeScript -- adding static types to the application
+- Vite -- development server and build tool
+- Firebase Authentication -- email and password authentication
+- Cloud Firestore -- storing users, products, and orders
+- Redux Toolkit -- managing shopping cart state
+- React Redux -- connecting Redux to React components
+- React Router -- navigation between pages
+- TanStack Query -- fetching and caching product data
+- CSS -- page and component styling
 
 ## Features:
 
-- Product Catalog
+1. Firebase Authentication
+- Register a new account using an email address and password.
+- Sign in with an existing account.
+- Sign out of the application.
+- Create a corresponding user document in the Firestore users
+  collection when a user registers.
 
-Display all products from FakeStore API.
+2. User Management
+- Store user information in the Firestore users collection.
+- Add and display user records using the data form and display pages.
+- Update and delete user records in Firestore.
 
-Show product title, price, category, description, rating, and image.
+3. Product Management
+- Retrieve products from the Firestore products collection instead
+  of the FakeStore API.
+- Add new products.
+- Update existing products.
+- Delete products.
+- Display products in the application.
+New products do not have to include a rating, so the product display
+handles missing rating information.
 
-Add products to the shopping cart.
+4. Shopping Cart
+- Add products to the shopping cart.
+- Display cart items and quantities.
+- Calculate the number of items and the total price.
+- Clear the cart after a successful checkout.
+The cart state is managed with Redux Toolkit.
 
-Display a placeholder when a product image fails to load.
+5. Order Management
+- Require the user to be signed in before placing an order.
+- Save the order to the Firestore orders collection.
+- Store the user ID, user email, ordered products, quantities, total
+  price, and creation timestamp.
+- Display the signed-in user's order history.
+- Show the order ID, creation date, and total price.
+- Open an individual order to view its products, quantities,
+  subtotals, and total price.
 
-- Category Navigation
+## Getting Started
 
-Retrieve product categories dynamically from the API.
+## Prerequisites
 
-Filter products by selected category.
+Make sure you have installed:
+- Node.js
+- npm (included with Node.js)
+- A Firebase account
 
-Use React Query to fetch category-specific products.
+1. Clone the repository
+git clone YOUR_REPOSITORY_URL
+Replace YOUR_REPOSITORY_URL with the URL of your Git repository.
+2. Open the project folder
+cd advanced-ecommerce
+3. Install dependencies
+npm install
+4. Configure Firebase
+Create a Firebase project and register a Web App in the Firebase
+Console.
 
-- Shopping Cart
+Enable the following Firebase services:
+1. Authentication -- enable the Email/Password sign-in provider.
+2. Cloud Firestore -- create a Firestore database.
+Add your Firebase web app configuration to
+src/config/firebaseConfig.ts. Keep your existing configuration
+structure and initialize the Firebase app, Authentication, and Firestore
+there.
 
-Add products to the cart.
+Do not commit private service-account credentials or other server-side
+secrets to your repository. Firebase web configuration is intended to be
+used by the client, but access to your Firestore data must still be
+protected with security rules.
+5. Start the development server
+npm run dev
+Open the local URL printed in your terminal by Vite.
 
-Increase and decrease product quantities.
+Firebase Setup
+In the Firebase Console:
+1. Open your Firebase project.
+2. Go to Build → Authentication → Sign-in method.
+3. Enable Email/Password and save the change.
+4. Go to Build → Firestore Database.
+5. Create a database.
+6. Configure Firestore Security Rules for your application.
+Firestore collections are created automatically when the application
+first writes a document to them. The users, products, and orders
+collections do not need to be manually populated with empty collections.
+Firestore Database Structure
+The application uses the following collections.
+users
+Stores user-related documents.
 
-Remove products from the cart.
+A registration-created user document is associated with the Firebase
+Authentication user's UID.
 
-Display product images, titles, quantities, and prices.
-
-Calculate the total number of products.
-
-Calculate the total shopping cart price.
-
-- Session Storage
-
-Save cart data in sessionStorage.
-
-Restore cart data when the application is refreshed.
-
-Keep cart information available across application pages during the browser session.
-
-- Checkout
-
-Simulate a successful checkout.
-
-Clear the Redux shopping cart.
-
-Clear the saved cart data in sessionStorage.
-
-Display a success message after checkout.
-
-- API
-
-This project uses the FakeStore API:
-
-All Products: https://fakestoreapi.com/products
-
-Categories: https://fakestoreapi.com/products/categories
-
-Products by Category: https://fakestoreapi.com/products/category/{category}
-
-## State Management
-
-Redux Toolkit is used to manage the shopping cart state. React Query is used to fetch and cache product and category information from the FakeStore API.
-
-SessionStorage is used to save and restore shopping cart data during the browser session.
+Example registration profile:
+{
+  uid: "FIREBASE_AUTH_USER_UID",
+  email: "user@example.com",
+  createdAt: "Firestore server timestamp"
+}
+The basic user data form also writes name and age records to this
+collection:
+{
+  name: "Alex",
+  age: 25
+}
+These are examples of the different document shapes currently used in
+the collection.
+products
+Stores products displayed in the shop.
+{
+  title: "Example Product",
+  price: 29.99,
+  category: "electronics",
+  description: "Product description",
+  image: "https://example.com/product-image.jpg"
+}
+The Firestore document ID is used as the product ID in the application.
+A rating object may also be present, but it is optional.
+orders
+Stores completed orders.
+{
+  userId: "FIREBASE_AUTH_USER_UID",
+  userEmail: "user@example.com",
+  items: [
+    {
+      id: "PRODUCT_DOCUMENT_ID",
+      title: "Example Product",
+      price: 29.99,
+      quantity: 2
+    }
+  ],
+  totalPrice: 59.98,
+  createdAt: "Firestore server timestamp"
+}
+The items array contains the products included in the order. The
+userId field connects the order to the user who placed it.

@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
 import type { AppDispatch } from "../redux/store";
-import type { Product } from "../types/product";
+import type { Product } from "../types/Products";
 
 interface Props {
   product: Product;
@@ -31,7 +31,7 @@ export default function ProductCard({ product }: Props) {
       <h3>${product.price.toFixed(2)}</h3>
 
       <p>
-        ⭐ {product.rating.rate} ({product.rating.count} reviews)
+        ⭐ {product.rating?.rate ?? "No rating"} ({product.rating?.count ?? 0} reviews)
       </p>
 
       <button

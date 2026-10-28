@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import CartItem from "../components/CartItem";
 import { clearCart } from "../redux/cartSlice";
-
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { auth, db } from "../config/firebaseConfig";
 import type { RootState, AppDispatch } from "../redux/store";
 
 export default function Cart() {
@@ -25,11 +25,37 @@ export default function Cart() {
     0
   );
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (items.length === 0) return;
 
-    dispatch(clearCart());
-    setMessage("Your order was completed successfully!");
+    const user = auth.currentUser;
+
+    if (!user) {
+      setMessage("Please log in before placing an order.");
+      return;
+    }
+
+    try {
+      const totalPrice = items.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
+
+      await addDoc(collection(db, "orders"), {
+        userId: user.uid,
+        userEmail: user.email,
+        items: items,
+        totalPrice: totalPrice,
+        createdAt: serverTimestamp(),
+      });
+
+      dispatch(clearCart());
+      setMessage("Your order was completed successfully!");
+
+    } catch (error) {
+      console.error("Error placing order:", error);
+      setMessage("Something went wrong. Your order was not completed.");
+    }
   };
 
   return (

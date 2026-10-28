@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from "./cartSlice";
-import type { CartItem } from "../types/product";
+import type { CartItem } from "../types/Products";
 
 const loadCart = (): CartItem[] => {
   try {

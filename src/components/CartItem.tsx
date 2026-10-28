@@ -5,7 +5,7 @@ import {
 } from "../redux/cartSlice";
 
 import type { AppDispatch } from "../redux/store";
-import type { CartItem as CartProduct } from "../types/product";
+import type { CartItem as CartProduct } from "../types/Products";
 
 interface Props {
   item: CartProduct;
